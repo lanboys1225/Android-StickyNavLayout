@@ -9,85 +9,70 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.zhy.stickynavlayout.view.SimpleViewPagerIndicator;
 
+public class MainActivity extends FragmentActivity {
 
-public class MainActivity extends FragmentActivity
-{
-	private String[] mTitles = new String[] { "简介", "评价", "相关" };
-	private SimpleViewPagerIndicator mIndicator;
-	private ViewPager mViewPager;
-	private FragmentPagerAdapter mAdapter;
-	private TabFragment[] mFragments = new TabFragment[mTitles.length];
+    private String[] mTitles = new String[]{"简介", "评价", "相关"};
+    private SimpleViewPagerIndicator mIndicator;
+    private ViewPager mViewPager;
+    private FragmentPagerAdapter mAdapter;
+    private TabFragment[] mFragments = new TabFragment[mTitles.length];
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		initViews();
-		initDatas();
-		initEvents();
-	}
+        initViews();
+        initDatas();
+        initEvents();
+    }
 
-	private void initEvents()
-	{
-		mViewPager.setOnPageChangeListener(new OnPageChangeListener()
-		{
-			@Override
-			public void onPageSelected(int position)
-			{
-			}
+    private void initEvents() {
+        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+            }
 
-			@Override
-			public void onPageScrolled(int position, float positionOffset,
-					int positionOffsetPixels)
-			{
-				mIndicator.scroll(position, positionOffset);
-			}
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                    int positionOffsetPixels) {
+                mIndicator.scroll(position, positionOffset);
+            }
 
-			@Override
-			public void onPageScrollStateChanged(int state)
-			{
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-			}
-		});
+            }
+        });
+    }
 
-	}
+    private void initDatas() {
+        mIndicator.setTitles(mTitles);
 
-	private void initDatas()
-	{
-		mIndicator.setTitles(mTitles);
+        for (int i = 0; i < mTitles.length; i++) {
+            mFragments[i] = (TabFragment) TabFragment.newInstance(mTitles[i]);
+        }
 
-		for (int i = 0; i < mTitles.length; i++)
-		{
-			mFragments[i] = (TabFragment) TabFragment.newInstance(mTitles[i]);
-		}
+        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() {
+                return mTitles.length;
+            }
 
-		mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
-		{
-			@Override
-			public int getCount()
-			{
-				return mTitles.length;
-			}
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+        };
 
-			@Override
-			public Fragment getItem(int position)
-			{
-				return mFragments[position];
-			}
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setCurrentItem(0);
+    }
 
-		};
+    private void initViews() {
+        mIndicator = (SimpleViewPagerIndicator) findViewById(R.id.id_stickynavlayout_indicator);
+        mViewPager = (ViewPager) findViewById(R.id.id_stickynavlayout_viewpager);
 
-		mViewPager.setAdapter(mAdapter);
-		mViewPager.setCurrentItem(0);
-	}
-
-	private void initViews()
-	{
-		mIndicator = (SimpleViewPagerIndicator) findViewById(R.id.id_stickynavlayout_indicator);
-		mViewPager = (ViewPager) findViewById(R.id.id_stickynavlayout_viewpager);
-		
 		/*
 		RelativeLayout ll = (RelativeLayout) findViewById(R.id.id_stickynavlayout_topview);
 		TextView tv = new TextView(this);
@@ -96,7 +81,5 @@ public class MainActivity extends FragmentActivity
 		ll.addView(tv, new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT, 600));
 		*/
-	}
-
-
+    }
 }
